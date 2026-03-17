@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Speech Analytics to Taxonomy | Ariane Lesnyak Castelló</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET ---------- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        /* ---------- TOKENS (exatamente iguais à landing page) ---------- */
+        :root {
+            --bg:        #f8f5f2;
+            --bg-case:   #dccafc;
+            --purple:    #6e35cb;
+            --mint:      #6cd7ae;
+            --ink:       #111111;
+            --muted:     #555555;
+            --mid:       #777777;
+            --white:     #ffffff;
+            --border:    rgba(110,53,203,0.15);
+            --border-soft: rgba(0,0,0,0.08);
+            --tag-bg:    #ffffff;
+            --footer-bg: #1a1a1a;
+
+            --purple-dim: rgba(110,53,203,0.08);
+            --mint-dim:   rgba(108,215,174,0.15);
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        /* ---------- NAV (idêntica à landing page) ---------- */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(248,245,242,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 0 2.5rem;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1rem; font-weight: 700; color: var(--ink);
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--purple); }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a {
+            color: var(--muted); text-decoration: none; font-size: 0.82rem;
+            font-weight: 400; transition: color 0.2s; font-family: Arial, sans-serif;
+        }
+        .nav-links a:hover { color: var(--purple); }
+        .nav-cta {
+            background: var(--purple); color: var(--white);
+            padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600;
+            text-decoration: none; border-radius: 100px;
+            transition: opacity 0.2s; letter-spacing: 0.01em;
+        }
+        .nav-cta:hover { opacity: 0.85; }
+
+        /* ---------- CONTAINER ---------- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        /* ---------- CASE HEADER ---------- */
+        .case-header {
+            padding: 9rem 2.5rem 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .case-eyebrow {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--purple-dim); border: 1px solid var(--border);
+            color: var(--purple); padding: 0.35rem 1rem; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+            text-transform: uppercase; margin-bottom: 2rem;
+            font-family: Arial, sans-serif;
+        }
+        .case-eyebrow::before {
+            content: ''; width: 7px; height: 7px; background: var(--mint);
+            border-radius: 50%; flex-shrink: 0;
+        }
+        .case-header h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 700; line-height: 1.1;
+            letter-spacing: -0.03em; margin-bottom: 1.2rem;
+            color: var(--ink);
+        }
+        .case-subtitle {
+            font-size: 1.1rem; color: var(--muted);
+            max-width: 700px; margin-bottom: 1.5rem;
+            font-family: Arial, sans-serif;
+        }
+        .case-tags {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+        }
+        .tag {
+            background: var(--white); border: 1px solid var(--border-soft);
+            color: var(--ink); padding: 0.3rem 0.85rem; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 400; font-family: Arial, sans-serif;
+        }
+
+        /* ---------- SECTION STYLES ---------- */
+        section { margin-bottom: 4rem; }
+        .section-inner { max-width: 1100px; margin: 0 auto; padding: 0 2.5rem; }
+
+        h2 {
+            font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em;
+            margin: 3rem 0 1.5rem; color: var(--ink);
+        }
+        h3 {
+            font-size: 1.3rem; font-weight: 600; margin: 2rem 0 1rem;
+            color: var(--purple);
+        }
+
+        /* epistemology box */
+        .epistemology-box {
+            background: var(--bg-case);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        .epistemology-box strong { color: var(--purple); font-style: normal; }
+
+        /* cards */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        /* two-columns */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        @media (max-width: 640px) { .two-columns { grid-template-columns: 1fr; } }
+
+        .card h4 {
+            color: var(--purple);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            font-family: Arial, sans-serif;
+        }
+        .card ul, .card ol {
+            margin-left: 1.2rem;
+        }
+        .card li {
+            margin-bottom: 0.5rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* metrics grid (igual landing) */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .metric-card {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--purple);
+        }
+        .metric-number {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--purple);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+        }
+
+        /* imagem container */
+        .image-container {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-soft);
+        }
+        .image-caption {
+            font-size: 0.8rem;
+            color: var(--muted);
+            margin-top: 1rem;
+            text-align: center;
+            font-style: italic;
+            font-family: Arial, sans-serif;
+        }
+
+        /* pipeline steps */
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .pipeline-step {
+            background: var(--bg-case);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .step-number {
+            background: var(--purple);
+            color: var(--white);
+            width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .pipeline-step p {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+        }
+
+        /* tabelas */
+        .table-container {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--purple-dim);
+            color: var(--purple);
+            padding: 0.8rem;
+            font-weight: 600;
+            text-align: left;
+            font-size: 0.8rem;
+            border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-family: Arial, sans-serif;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        /* before/after boxes (igual landing) */
+        .ba-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        @media (max-width: 560px) { .ba-wrap { grid-template-columns: 1fr; } }
+
+        .ba-box {
+            padding: 1.2rem 1.4rem;
+            font-size: 0.83rem;
+            line-height: 1.65;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+        .ba-before {
+            background: rgba(239,68,68,0.05);
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+        .ba-after {
+            background: rgba(108,215,174,0.1);
+            border: 1px solid rgba(108,215,174,0.3);
+        }
+        .ba-label {
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+        .ba-before .ba-label { color: #dc2626; }
+        .ba-after .ba-label { color: #059669; }
+
+        /* analysis box */
+        .analysis-box {
+            background: var(--bg-case);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+        .analysis-box h4 {
+            color: var(--purple);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .analysis-list {
+            list-style: none;
+        }
+        .analysis-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.2rem;
+            position: relative;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+        .analysis-list li::before {
+            content: "•";
+            color: var(--purple);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* ---------- FOOTER (idêntico à landing page) ---------- */
+        footer {
+            background: var(--footer-bg);
+            color: #aaaaaa;
+            padding: 3.5rem 2.5rem 2rem;
+            margin-top: 4rem;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #2e2e2e;
+        }
+        @media (max-width: 768px) {
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        }
+        .footer-logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+            display: block;
+            letter-spacing: -0.02em;
+        }
+        .footer-logo span { color: var(--mint); }
+        .footer-tagline {
+            font-size: 0.82rem;
+            color: #666;
+            line-height: 1.6;
+            max-width: 220px;
+            font-family: Arial, sans-serif;
+        }
+        .footer-col h5 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            font-family: Arial, sans-serif;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-col ul li a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-family: Arial, sans-serif;
+            transition: color 0.2s;
+        }
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-copy {
+            font-size: 0.75rem;
+            color: #555;
+            font-family: Arial, sans-serif;
+        }
+        .footer-links-bottom {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .footer-links-bottom a {
+            font-size: 0.75rem;
+            color: #555;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            transition: color 0.2s;
+        }
+        .footer-links-bottom a:hover {
+            color: #aaa;
+        }
+
+        /* reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV (idêntica à landing page) -->
+    <nav>
+        <span class="nav-logo">Ariane<span>.</span></span>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#cases">Cases</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="nav-cta">Get in touch</a>
+    </nav>
+
+    <!-- CASE HEADER -->
+    <div class="case-header">
+        <span class="case-eyebrow">Case Study · Corpus Linguistics & Taxonomy</span>
+        <h1>From Speech Analytics to Corporate Taxonomy</h1>
+        <div class="case-subtitle">Bridging natural language variation with controlled vocabulary infrastructure at enterprise scale.</div>
+        <div class="case-tags">
+            <span class="tag">Speech Analytics</span>
+            <span class="tag">Controlled Vocabulary</span>
+            <span class="tag">Corporate Taxonomy</span>
+            <span class="tag">ISO 25964</span>
+            <span class="tag">Semantic Relations</span>
+            <span class="tag">2M+ monthly interactions</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+
+        <!-- 1. EPISTEMOLOGICAL POSITIONING -->
+        <section class="reveal">
+            <h2>1. Epistemological Positioning</h2>
+            <div class="epistemology-box">
+                <p style="text-align: justify;"><strong>Research Proposition:</strong> This applied research investigates how natural language variation in customer-service interactions creates semantic gaps in information retrieval systems. By analyzing speech analytics data and search logs, the project develops a methodological framework for transforming spontaneous speech patterns into governed corporate taxonomy, demonstrating how linguistic analysis can bridge human communication with computational systems.</p>
+            </div>
+            <p style="color: var(--muted); font-family: Arial, sans-serif;">In large-scale telecommunications customer service, the disconnect between how customers express problems and how systems understand those expressions creates operational inefficiencies and user frustration. The work develops from a localized controlled vocabulary to an enterprise-wide taxonomy, providing a replicable model for linguistic infrastructure development in corporate environments.</p>
+        </section>
+
+        <!-- 2. RESEARCH CONTEXT -->
+        <section class="reveal">
+            <h2>2. Research Context</h2>
+            <div class="two-columns">
+                <div class="card">
+                    <h4>The Empirical Challenge</h4>
+                    <ul>
+                        <li><strong>Data Source:</strong> Speech analytics transcripts + CRM search logs from multinational telecom (2020–2025)</li>
+                        <li><strong>Scale:</strong> 30,000+ customer service agents, 2M+ monthly interactions</li>
+                        <li><strong>Problem:</strong> Semantic noise between customer expressions, agent searches, and system content</li>
+                        <li><strong>Linguistic Variance:</strong> Proliferation of non-standard technical jargon and regional idiomatic expressions</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Methodological Approach</h4>
+                    <ul>
+                        <li><b>Speech Analytics Analysis:</b> systematic examination of communication patterns</li>
+                        <li><b>Semantic Gap Mapping:</b> identifying divergences between expressed needs and system responses</li>
+                        <li><b>Controlled Vocabulary Development:</b> structured terminological systems with semantic relations</li>
+                        <li><b>Taxonomic Expansion:</b> scaling localized vocabulary to enterprise infrastructure</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <div style="background: var(--bg); padding: 1.5rem; border-radius: 8px;">
+                    <p><strong style="color: var(--purple);">EMPIRICAL EVIDENCE OF SEMANTIC INFRASTRUCTURE GAP:</strong></p>
+                    <div style="background: var(--white); padding: 1rem; border-radius: 8px; margin-top: 1rem;">
+                        <p><span style="color: var(--purple);">Customer Utterance:</span> "my mobile data ran out too quickly"</p>
+                        <p><span style="color: var(--purple);">Agent Search:</span> "no mobile internet"</p>
+                        <p><span style="color: var(--purple);">System Classification:</span> "data allowance exhaustion"</p>
+                        <p><span style="color: var(--purple);">Semantic Analysis:</span> Multiple lexical variants for single concept create retrieval failure</p>
+                    </div>
+                </div>
+                <div class="image-caption">Figure 1: The triple mismatch — how one concept fragments across three layers</div>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card"><span class="metric-number">41</span><div class="metric-label">customer variants</div></div>
+                <div class="metric-card"><span class="metric-number">12</span><div class="metric-label">agent search patterns</div></div>
+                <div class="metric-card"><span class="metric-number">3</span><div class="metric-label">system classifications</div></div>
+                <div class="metric-card"><span class="metric-number">30k+</span><div class="metric-label">agents impacted</div></div>
+            </div>
+        </section>
+
+        <!-- 3. METHODOLOGICAL PIPELINE -->
+        <section class="reveal">
+            <h2>3. Methodological Pipeline</h2>
+            <div class="epistemology-box">
+                <p><strong>Methodological Contribution:</strong> A systematic 5-stage pipeline transforming unstructured linguistic data into governed knowledge infrastructure, with explicit analytical criteria at each stage.</p>
+            </div>
+
+            <div class="pipeline-grid">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Corpus Collection</div>
+                    <p>Natural language data from 2M+ monthly interactions, attention to variation patterns</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Semantic Gap Mapping</div>
+                    <p>Lexical-conceptual relationships across communication layers</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Vocabulary Design</div>
+                    <p>Hierarchical, associative, and equivalence relations between terms</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Implementation</div>
+                    <p>Empirical testing with operational metrics and user feedback</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Taxonomic Expansion</div>
+                    <p>Enterprise-wide integration with governance structures</p>
+                </div>
+            </div>
+
+            <h3>Semantic Relation Framework</h3>
+            <div class="table-container">
+                <table>
+                    <thead><tr><th>Relation Type</th><th>Purpose</th><th>Example</th><th>Impact</th></tr></thead>
+                    <tbody>
+                        <tr><td><strong>Hierarchical</strong></td><td>Navigation</td><td>"mobile service" → "data plan"</td><td>Drill-down capability</td></tr>
+                        <tr><td><strong>Equivalence</strong></td><td>Synonymy</td><td>"bill" = "invoice"</td><td>Improved recall</td></tr>
+                        <tr><td><strong>Associative</strong></td><td>Discovery</td><td>"data usage" ↔ "allowance"</td><td>Exploratory search</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- 4. TRANSFORMATION WORKFLOW -->
+        <section class="reveal">
+            <h2>4. Transformation Workflow</h2>
+
+            <!-- Phase 1 -->
+            <h3>Phase 1: Terminological Dispersion</h3>
+            <div class="image-container">
+                <center><img src="https://github.com/alc-etimo/emlds/blob/main/case%20studies/case%201%20-%20from%20speech%20analytics%20to%20corporate%20taxonomy/images/case-1-from-speech-analytics-to-corporate-taxonomy-data-cap-variants.PNG?raw=true" alt="Speech Analytics Data"></center>
+                <div class="image-caption">Figure 2: Boolean proximity operators used for lexical pattern extraction — 41 variants identified</div>
+            </div>
+
+            <div class="analysis-box">
+                <h4>Methodological Analysis</h4>
+                <ul class="analysis-list">
+                    <li><strong>Corpus Linguistics Methodology:</strong> Treating operational language as a corpus for systematic analysis, not error detection</li>
+                    <li><strong>Attested Usage as Evidence:</strong> 41 variants documented as legitimate data points, not mistakes</li>
+                    <li><strong>Friction Point Identification:</strong> The gap between customer expressions, agent searches, and system classifications reveals where intervention is needed</li>
+                </ul>
+            </div>
+
+            <div class="epistemology-box">
+                <p><strong>Critical Finding — The Agent's Dilemma:</strong> Agents developed their own intermediary vocabulary (12 search patterns) that neither matched customer expressions (41 variants) nor aligned with system classifications (3 terms). This created a "triple mismatch" requiring constant translation between layers — adding cognitive load and reducing efficiency.</p>
+            </div>
+
+            <!-- Phase 2 -->
+            <h3>Phase 2: From Description to Prescriptive Normalization</h3>
+            <div class="image-container">
+                <center><img src="https://github.com/alc-etimo/emlds/blob/main/case%20studies/case%201%20-%20from%20speech%20analytics%20to%20corporate%20taxonomy/images/case-1-from-speech-analytics-to-corporate-taxonomy-terms-to-avoid.PNG?raw=true" alt="Negative Constraints"></center>
+                <div class="image-caption">Figure 3: Negative constraints and procedural noise filtered during taxonomy development</div>
+            </div>
+
+            <div class="analysis-box">
+                <h4>Methodological Analysis</h4>
+                <ul class="analysis-list">
+                    <li><strong>Usage-Driven Decision Making:</strong> Term selection emerged from systematic analysis of frequency, distribution, and operational relevance</li>
+                    <li><strong>Systemic Interoperability:</strong> Terms must function across search systems, knowledge bases, and agent training materials</li>
+                    <li><strong>Governance Artifact Creation:</strong> The "terms to avoid" list makes terminological decisions explicit and implementable</li>
+                </ul>
+            </div>
+
+            <!-- Phase 3 -->
+            <h3>Phase 3: Formalizing the Term within the Taxonomy</h3>
+            <div class="image-container">
+                <img src="https://github.com/alc-etimo/emlds/blob/main/case%20studies/case%201%20-%20from%20speech%20analytics%20to%20corporate%20taxonomy/images/case-1-from-speech-analytics-to-corporate-taxonomy-data-cap-meaning.PNG?raw=true" alt="Term Definition">
+                <div class="image-caption">Figure 4: Formal definition of the preferred term "franquia" — establishing precise conceptual boundaries</div>
+            </div>
+
+            <div class="image-container">
+              <center>  <img src="https://github.com/alc-etimo/emlds/blob/main/case%20studies/case%201%20-%20from%20speech%20analytics%20to%20corporate%20taxonomy/images/case-1-from-speech-analytics-to-corporate-taxonomy-hierarchical-tree-type-structure.PNG?raw=true" alt="Taxonomic Architecture"></center>
+                <div class="image-caption">Figure 5: Taxonomy expansion from macro-categories to granular data allowance attributes</div>
+            </div>
+
+            <div class="analysis-box">
+                <h4>Dual Output Framework</h4>
+                <ul class="analysis-list">
+                    <li><strong>Conceptual Specification:</strong> Formal definition establishes the term's intension — precise conceptual boundaries and denotational criteria</li>
+                    <li><strong>Structural Specification:</strong> Taxonomic position establishes the term's extension — place within the broader knowledge hierarchy</li>
+                    <li><strong>Applied Linguistics as Engineering:</strong> Transforming unstable folk-concepts into governed technical artifacts</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. RESULTS -->
+        <section class="reveal">
+            <h2>5. Results & Impact</h2>
+            <div class="metrics-grid">
+                <div class="metric-card"><span class="metric-number">700→2,700+</span><div class="metric-label">terms<br> in taxonomy</div></div>
+                <div class="metric-card"><span class="metric-number">67%</span><div class="metric-label">reduction in zero-result searches</div></div>
+                <div class="metric-card"><span class="metric-number">30k+</span><div class="metric-label">agents <br>impacted</div></div>
+                <div class="metric-card"><span class="metric-number">18%</span><div class="metric-label">faster <br>resolution time</div></div>
+            </div>
+
+            <div class="two-columns">
+                <div class="card">
+                    <h4>Methodological Contributions</h4>
+                    <ul>
+                        <li>Speech Analytics Methodology</li>
+                        <li>Gap Analysis Framework</li>
+                        <li>Vocabulary Development Protocol</li>
+                        <li>Taxonomic Governance Model</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Organizational Transformations</h4>
+                    <ul>
+                        <li>Corporate Language Committee established</li>
+                        <li>Cross-departmental terminology integration</li>
+                        <li>From ad-hoc documentation to governed knowledge infrastructure</li>
+                        <li>Framework adopted by other business units</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. Relevance for AI Training -->
+        <section class="reveal">
+            <h2>6. Relevance for AI Training & Linguistic Data Science</h2>
+            <div class="epistemology-box">
+                <p>This case demonstrates that linguistic variation in operational contexts is systematic and analyzable. The methodological contribution combines applied corpus linguistics, terminological systems development, and human-centered information architecture — directly applicable to:</p>
+                <ul style="margin-top: 1rem; margin-left: 1.5rem; color: var(--muted);">
+                    <li><strong>AI Training Data Curation:</strong> Structured taxonomies improve model understanding of natural language variation</li>
+                    <li><strong>NLP Dataset Development:</strong> Semantic relation frameworks enhance model performance</li>
+                    <li><strong>Linguistic Quality Assurance:</strong> Systematic error categorization reduces recurring issues</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER (idêntico à landing page) -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <span class="footer-logo">Ariane<span>.</span></span>
+                    <p class="footer-tagline">Linguistic AI Specialist · Portuguese Language Expert · São Paulo, Brazil · Open to remote worldwide.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Portfolio</h5>
+                    <ul>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#about">About</a></li>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#cases">Case Studies</a></li>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#skills">Skills</a></li>
+                        <li><a href="https://alc-etimo.github.io/emlds/" target="_blank">EMLDS Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Expertise</h5>
+                    <ul>
+                        <li><a href="#">LLM Evaluation</a></li>
+                        <li><a href="#">AI Training Data</a></li>
+                        <li><a href="#">Localization LQA</a></li>
+                        <li><a href="#">NLP Data Quality</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li><a href="mailto:ariane.etimo@gmail.com">Email</a></li>
+                        <li><a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://wa.me/5511943882913" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span class="footer-copy">© 2026 Ariane Lesnyak Castelló. All rights reserved.</span>
+                <div class="footer-links-bottom">
+                    <a href="mailto:ariane.etimo@gmail.com">Contact</a>
+                    <a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer para animações reveal
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Highlight do link ativo na navegação
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 120) current = s.id;
+            });
+            navLinks.forEach(a => {
+                a.style.color = a.getAttribute('href') === '#' + current ? 'var(--purple)' : '';
+            });
+        });
+    </script>
+</body>
+</html>
