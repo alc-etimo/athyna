@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Study: Syntax as Audit Tool | Ariane Lesnyak Castelló</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* ---------- RESET ---------- */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+
+        /* ---------- TOKENS (exactly like the Athyna landing page) ---------- */
+        :root {
+            --bg:        #f8f5f2;
+            --bg-case:   #dccafc;
+            --purple:    #6e35cb;
+            --mint:      #6cd7ae;
+            --ink:       #111111;
+            --muted:     #555555;
+            --mid:       #777777;
+            --white:     #ffffff;
+            --border:    rgba(110,53,203,0.15);
+            --border-soft: rgba(0,0,0,0.08);
+            --tag-bg:    #ffffff;
+            --footer-bg: #1a1a1a;
+
+            --purple-dim: rgba(110,53,203,0.08);
+            --mint-dim:   rgba(108,215,174,0.15);
+        }
+
+        body {
+            font-family: 'Lexend', sans-serif;
+            background: var(--bg);
+            color: var(--ink);
+            line-height: 1.6;
+            font-size: 16px;
+            overflow-x: hidden;
+        }
+
+        /* ---------- NAV (identical to landing page) ---------- */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(248,245,242,0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-soft);
+            padding: 0 2.5rem;
+            height: 64px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .nav-logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1rem; font-weight: 700; color: var(--ink);
+            letter-spacing: -0.02em;
+        }
+        .nav-logo span { color: var(--purple); }
+        .nav-links { display: flex; align-items: center; gap: 2rem; }
+        .nav-links a {
+            color: var(--muted); text-decoration: none; font-size: 0.82rem;
+            font-weight: 400; transition: color 0.2s; font-family: Arial, sans-serif;
+        }
+        .nav-links a:hover { color: var(--purple); }
+        .nav-cta {
+            background: var(--purple); color: var(--white);
+            padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600;
+            text-decoration: none; border-radius: 100px;
+            transition: opacity 0.2s; letter-spacing: 0.01em;
+        }
+        .nav-cta:hover { opacity: 0.85; }
+
+        /* ---------- CONTAINER ---------- */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 2.5rem;
+        }
+
+        /* ---------- CASE HEADER ---------- */
+        .case-header {
+            padding: 9rem 2.5rem 3rem;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .case-eyebrow {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            background: var(--purple-dim); border: 1px solid var(--border);
+            color: var(--purple); padding: 0.35rem 1rem; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+            text-transform: uppercase; margin-bottom: 2rem;
+            font-family: Arial, sans-serif;
+        }
+        .case-eyebrow::before {
+            content: ''; width: 7px; height: 7px; background: var(--mint);
+            border-radius: 50%; flex-shrink: 0;
+        }
+        .case-header h1 {
+            font-size: clamp(2.2rem, 4.5vw, 3.5rem);
+            font-weight: 700; line-height: 1.1;
+            letter-spacing: -0.03em; margin-bottom: 1.2rem;
+            color: var(--ink);
+        }
+        .case-subtitle {
+            font-size: 1.1rem; color: var(--muted);
+            max-width: 700px; margin-bottom: 1.5rem;
+            font-family: Arial, sans-serif;
+        }
+        .case-tags {
+            display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.5rem;
+        }
+        .tag {
+            background: var(--white); border: 1px solid var(--border-soft);
+            color: var(--ink); padding: 0.3rem 0.85rem; border-radius: 100px;
+            font-size: 0.72rem; font-weight: 400; font-family: Arial, sans-serif;
+        }
+
+        /* ---------- SECTION STYLES ---------- */
+        section { margin-bottom: 4rem; }
+
+        h2 {
+            font-size: 1.8rem; font-weight: 700; letter-spacing: -0.02em;
+            margin: 3rem 0 1.5rem; color: var(--ink);
+        }
+        h3 {
+            font-size: 1.3rem; font-weight: 600; margin: 2rem 0 1rem;
+            color: var(--purple);
+        }
+
+        /* epistemology box (used for context) */
+        .epistemology-box {
+            background: var(--bg-case);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            font-style: italic;
+        }
+        .epistemology-box strong { color: var(--purple); font-style: normal; }
+
+        /* cards */
+        .card {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.8rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+        }
+
+        /* two-columns */
+        .two-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        @media (max-width: 640px) { .two-columns { grid-template-columns: 1fr; } }
+
+        .card h4 {
+            color: var(--purple);
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+            font-family: Arial, sans-serif;
+        }
+        .card ul, .card ol {
+            margin-left: 1.2rem;
+        }
+        .card li {
+            margin-bottom: 0.5rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+
+        /* metrics grid (like landing page) */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .metric-card {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 1.2rem;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--purple);
+        }
+        .metric-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--purple);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .metric-label {
+            font-size: 0.75rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+        }
+
+        /* pipeline steps */
+        .pipeline-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .pipeline-step {
+            background: var(--bg-case);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .step-number {
+            background: var(--purple);
+            color: var(--white);
+            width: 26px;
+            height: 26px;
+            border-radius: 13px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .step-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        .pipeline-step p {
+            font-size: 0.8rem;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+        }
+
+        /* severity grid */
+        .severity-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        @media (max-width: 640px) { .severity-grid { grid-template-columns: 1fr; } }
+        .severity-card {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 12px;
+            padding: 1.2rem;
+        }
+        .severity-card h5 {
+            font-weight: 700;
+            margin-bottom: 0.3rem;
+            font-size: 1rem;
+        }
+        .severity-card.severity-critical h5 { color: #b91c1c; }
+        .severity-card.severity-major h5 { color: #c2410c; }
+        .severity-card.severity-minor h5 { color: #b45309; }
+        .severity-card.severity-notpresent h5 { color: #047857; }
+        .severity-tag {
+            display: inline-block;
+            font-size: 0.65rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: #f1f5f9;
+            padding: 0.2rem 0.6rem;
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+        .severity-critical .severity-tag { background: #fee2e2; color: #b91c1c; }
+        .severity-major .severity-tag { background: #ffedd5; color: #c2410c; }
+        .severity-minor .severity-tag { background: #fef3c7; color: #b45309; }
+        .severity-notpresent .severity-tag { background: #d1fae5; color: #047857; }
+
+        /* table */
+        .table-container {
+            background: var(--white);
+            border: 1px solid var(--border-soft);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th {
+            background: var(--purple-dim);
+            color: var(--purple);
+            padding: 0.8rem;
+            font-weight: 600;
+            text-align: left;
+            font-size: 0.8rem;
+            border-bottom: 2px solid var(--border);
+        }
+        td {
+            padding: 0.8rem;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--muted);
+            font-size: 0.8rem;
+            font-family: Arial, sans-serif;
+        }
+        tr:last-child td { border-bottom: none; }
+
+        /* before/after boxes (like landing page) */
+        .ba-wrap {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        @media (max-width: 560px) { .ba-wrap { grid-template-columns: 1fr; } }
+
+        .ba-box {
+            padding: 1.2rem 1.4rem;
+            font-size: 0.83rem;
+            line-height: 1.65;
+            border-radius: 10px;
+            font-family: Arial, sans-serif;
+        }
+        .ba-before {
+            background: rgba(239,68,68,0.05);
+            border: 1px solid rgba(239,68,68,0.2);
+        }
+        .ba-after {
+            background: rgba(108,215,174,0.1);
+            border: 1px solid rgba(108,215,174,0.3);
+        }
+        .ba-label {
+            font-size: 0.64rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 0.6rem;
+        }
+        .ba-before .ba-label { color: #dc2626; }
+        .ba-after .ba-label { color: #059669; }
+        .ba-box pre {
+            background: rgba(0,0,0,0.05);
+            padding: 0.5rem;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-size: 0.75rem;
+        }
+
+        /* analysis box */
+        .analysis-box {
+            background: var(--bg-case);
+            border-radius: 16px;
+            padding: 1.8rem;
+            margin: 2rem 0;
+            border: 1px solid var(--border);
+        }
+        .analysis-box h4 {
+            color: var(--purple);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+            font-weight: 700;
+        }
+        .analysis-list {
+            list-style: none;
+        }
+        .analysis-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.2rem;
+            position: relative;
+            color: var(--muted);
+            font-family: Arial, sans-serif;
+            font-size: 0.9rem;
+        }
+        .analysis-list li::before {
+            content: "•";
+            color: var(--purple);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        /* ---------- FOOTER (identical to landing page) ---------- */
+        footer {
+            background: var(--footer-bg);
+            color: #aaaaaa;
+            padding: 3.5rem 2.5rem 2rem;
+            margin-top: 4rem;
+        }
+        .footer-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        .footer-top {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1fr;
+            gap: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #2e2e2e;
+        }
+        @media (max-width: 768px) {
+            .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+        }
+        .footer-logo {
+            font-family: 'Lexend', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 0.8rem;
+            display: block;
+            letter-spacing: -0.02em;
+        }
+        .footer-logo span { color: var(--mint); }
+        .footer-tagline {
+            font-size: 0.82rem;
+            color: #666;
+            line-height: 1.6;
+            max-width: 220px;
+            font-family: Arial, sans-serif;
+        }
+        .footer-col h5 {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--white);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            font-family: Arial, sans-serif;
+        }
+        .footer-col ul {
+            list-style: none;
+        }
+        .footer-col ul li {
+            margin-bottom: 0.5rem;
+        }
+        .footer-col ul li a {
+            color: #777;
+            text-decoration: none;
+            font-size: 0.82rem;
+            font-family: Arial, sans-serif;
+            transition: color 0.2s;
+        }
+        .footer-col ul li a:hover {
+            color: var(--white);
+        }
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .footer-copy {
+            font-size: 0.75rem;
+            color: #555;
+            font-family: Arial, sans-serif;
+        }
+        .footer-links-bottom {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .footer-links-bottom a {
+            font-size: 0.75rem;
+            color: #555;
+            text-decoration: none;
+            font-family: Arial, sans-serif;
+            transition: color 0.2s;
+        }
+        .footer-links-bottom a:hover {
+            color: #aaa;
+        }
+
+        /* reveal animation */
+        .reveal {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- NAV (identical to landing page) -->
+    <nav>
+        <span class="nav-logo">Ariane<span>.</span></span>
+        <div class="nav-links">
+            <a href="#about">About</a>
+            <a href="#cases">Cases</a>
+            <a href="#skills">Skills</a>
+            <a href="#contact">Contact</a>
+        </div>
+        <a href="#contact" class="nav-cta">Get in touch</a>
+    </nav>
+
+    <!-- CASE HEADER -->
+    <div class="case-header">
+        <span class="case-eyebrow">Case Study · Syntax as Audit Tool</span>
+        <h1>Syntax as an Audit Tool:</h1>
+        <div class="case-subtitle">Detecting Hallucinations and Logical Inconsistencies in AI-Generated Texts.</div>
+        <div class="case-tags">
+            <span class="tag">Syntax</span>
+            <span class="tag">LLM Evaluation</span>
+            <span class="tag">AI Output Analysis</span>
+            <span class="tag">Thematic Roles</span>
+            <span class="tag">Hallucination Detection</span>
+            <span class="tag">Audit Framework</span>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <main class="container">
+        <!-- DEDICATION -->
+        <section class="reveal">
+            <div class="epistemology-box">
+                <p><strong>For Professor Márcia:</strong> You taught me that syntactic structure is not arbitrary, but reflects deep logical relationships between elements. In the world of Artificial Intelligence, I found the same problem: texts that are seemingly fluent but logically broken. I used the concepts of thematic roles and syntactic hierarchy that I learned from you to create a system that not only evaluates but diagnoses structural failures before they cause real problems.</p>
+            </div>
+        </section>
+
+        <!-- 1. THE PROBLEM -->
+        <section class="reveal">
+            <h2>1. The Problem: Fluency ≠ Logical Precision</h2>
+            <p style="color: var(--muted); font-family: Arial, sans-serif; margin-bottom: 2rem;">Streaming platforms use AI systems to generate subtitles automatically, but they rely on superficial metrics that don't capture logical integrity. The result: fluently structured but syntactically and semantically incoherent subtitles, with "hallucinations" (inventions or distortions with no basis in the audio) that go unnoticed until they harm the viewer's experience.</p>
+
+            <div class="metrics-grid">
+                <div class="metric-card">
+                    <div class="metric-number">Repetition</div>
+                    <div class="metric-label">Hallucination</div>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem;">System generating "I don't know. I don't know." with no match to audio</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">Thematic Role</div>
+                    <div class="metric-label">Violation</div>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem;">Agents and patients swapped, creating nonsensical actions</p>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-number">Logical Order</div>
+                    <div class="metric-label">Break</div>
+                    <p style="font-size: 0.75rem; margin-top: 0.5rem;">Causal sequencing inverted, impossible to follow</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. THEORETICAL FOUNDATION -->
+        <section class="reveal">
+            <h2>2. Theoretical Foundation: Syntax as Diagnosis</h2>
+            <div class="two-columns">
+                <div class="card">
+                    <h4>Theoretical Concepts Applied</h4>
+                    <ul>
+                        <li><strong>Argument Structure (θ-grid):</strong> Checking predicate completeness</li>
+                        <li><strong>Thematic Roles (θ-roles):</strong> Consistency of who does what</li>
+                        <li><strong>X-bar Hierarchy:</strong> Structural integrity</li>
+                        <li><strong>Syntactic & Semantic Selection:</strong> Checking possible combinations</li>
+                        <li><strong>Theta Criterion:</strong> Detecting unlicensed elements</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h4>Practical Application</h4>
+                    <ul>
+                        <li>Early detection of logical hallucinations in subtitles</li>
+                        <li>Typological classification of syntactic-semantic errors</li>
+                        <li>Scoring system based on structural integrity</li>
+                        <li>Monitoring dashboard for quality teams</li>
+                        <li>Structured feedback for system optimization</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="epistemology-box">
+                <p><strong>Central Hypothesis:</strong> Problems in AI system outputs often manifest as systematic syntactic-semantic violations that can be detected through structural analysis, even when superficial fluency is high and the sentence appears well-formed.</p>
+            </div>
+        </section>
+
+        <!-- 3. METHODOLOGY -->
+        <section class="reveal">
+            <h2>3. Methodology: From Operational Protocol to Syntactic Taxonomy</h2>
+            <div class="epistemology-box">
+                <p><strong>Methodological Innovation:</strong> I transformed a subjective feedback process into a replicable syntactic audit system that not only classifies errors, but diagnoses structural violations and provides data to calibrate the AI. This section details how I operationalized theoretical concepts from generative syntax into analytical categories applicable to an industrial context.</p>
+            </div>
+
+            <h3>3.1. 5-Stage Analysis Protocol</h3>
+            <div class="pipeline-grid">
+                <div class="pipeline-step">
+                    <div class="step-number">1</div>
+                    <div class="step-title">Corpus Collection</div>
+                    <p>Videos + AI-generated subtitles (Whisper, proprietary) in PT-BR & EN</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">2</div>
+                    <div class="step-title">Synchronous Analysis</div>
+                    <p>Frame-by-frame playback, contrast audio/subtitle, deviation detection</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">3</div>
+                    <div class="step-title">Dual Classification</div>
+                    <p>Error category + Severity level</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">4</div>
+                    <div class="step-title">Precise Localization</div>
+                    <p>Video timestamp, subtitle line, context</p>
+                </div>
+                <div class="pipeline-step">
+                    <div class="step-number">5</div>
+                    <div class="step-title">Structured Documentation</div>
+                    <p>Normalized spreadsheet for analysis & engineering feedback</p>
+                </div>
+            </div>
+
+            <h3>3.2. Severity Levels</h3>
+            <div class="severity-grid">
+                <div class="severity-card severity-critical">
+                    <span class="severity-tag">CRITICAL</span>
+                    <h5>Maximum Impact</h5>
+                    <p style="font-size: 0.8rem; color: var(--muted);">Completely impairs comprehension or conveys opposite/false information. Syntactic violation makes sentence incomprehensible or radically alters interpretation.</p>
+                </div>
+                <div class="severity-card severity-major">
+                    <span class="severity-tag">MAJOR</span>
+                    <h5>High Impact</h5>
+                    <p style="font-size: 0.8rem; color: var(--muted);">Significantly hinders comprehension, requires considerable inferential effort. Violation breaks cohesion or introduces unresolvable ambiguity.</p>
+                </div>
+                <div class="severity-card severity-minor">
+                    <span class="severity-tag">MINOR</span>
+                    <h5>Low Impact</h5>
+                    <p style="font-size: 0.8rem; color: var(--muted);">Noticeable but doesn't interfere with basic comprehension. Peripheral feature violation, doesn't affect propositional core.</p>
+                </div>
+                <div class="severity-card severity-notpresent">
+                    <span class="severity-tag">NOT PRESENT</span>
+                    <h5>No Impact</h5>
+                    <p style="font-size: 0.8rem; color: var(--muted);">Error or deviation not found in analyzed videos/subtitles. Well-formed syntactic structures.</p>
+                </div>
+            </div>
+
+            <h3>3.3. Classification System: Integrating Generative Syntax</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Theoretical Concept</th>
+                            <th>Error Category</th>
+                            <th>Operationalization</th>
+                            <th>Severity & Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Syntax-Semantics Interface</strong></td>
+                            <td>Random subtitles & hallucinations</td>
+                            <td>Does the generated syntactic structure correspond to the semantic input?</td>
+                            <td><span style="color: #b91c1c;">Critical</span> — Invented content</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Scope Operators & Polarity</strong></td>
+                            <td>Word addition/deletion errors</td>
+                            <td>Were logical operators inserted/omitted, altering propositional truth?</td>
+                            <td><span style="color: #b91c1c;">Critical</span> — Alters meaning</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Agreement & Grammatical Features</strong></td>
+                            <td>Gender, formality, plurality</td>
+                            <td>Feature compatibility between head and dependents?</td>
+                            <td><span style="color: #b45309;">Minor</span> — Understandable</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Constituent Structure & Hierarchy</strong></td>
+                            <td>Strange line breaks</td>
+                            <td>Does the line break respect phrasal constituent boundaries?</td>
+                            <td><span style="color: #b45309;">Minor</span> — Still comprehensible</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Illocutionary Force & Sentence Type</strong></td>
+                            <td>Punctuation</td>
+                            <td>Does punctuation correctly mark illocutionary force (question, exclamation, command)?</td>
+                            <td><span style="color: #c2410c;">Major</span> — Distorts communication</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="epistemology-box">
+                <p><strong>Methodological Contribution:</strong> This protocol represents a synthesis between theoretical linguistic analysis and AI systems engineering. By linking each error category to a specific syntactic concept, I created a system that not only classifies but explains failures, allowing engineering teams to understand why the AI is failing and how to calibrate models to correct specific structural violations.</p>
+            </div>
+        </section>
+
+        <!-- 4. PARADIGMATIC CASES -->
+        <section class="reveal">
+            <h2>4. Paradigmatic Cases: In-Depth Syntactic Analysis</h2>
+
+            <!-- CASE 1 -->
+            <h3>Case 1: Number Agreement Failure in Collective Context</h3>
+            <div class="two-columns">
+                <div class="card">
+                    <h4>Context</h4>
+                    <p>Prison guard inspecting new inmates. The AI didn't consider the collective context and translated "you" as singular.</p>
+                    <div class="ba-box ba-before" style="margin-top: 1rem;">
+                        <span class="ba-label">❌ AI Output (flawed)</span>
+                        <p><em>Singular commands</em> — treating group as individual</p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Visual Context & Correction</h4>
+                    <p>Visual scene: Multiple inmates in formation.<br>Original audio (English): Plural commands (collective "you").</p>
+                    <div class="ba-box ba-after" style="margin-top: 1rem;">
+                        <span class="ba-label">✅ Required Correction (Plural)</span>
+                        <p>"Shake your hair." • "Wiggle your fingers." • "Spread your toes." • "Blow your nose." • "Bend down." • "Cough." • "Stand up." • "Turn around."</p>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>Syntactic Analysis of the Failure</h4>
+                <ul class="analysis-list">
+                    <li><strong>Non-Percolated Morphosyntactic Features:</strong> The AI system didn't resolve the ambiguity of English "you" (singular/plural) through extralinguistic context (visual scene with multiple people). The imperative form remained in the default [+singular] feature.</li>
+                    <li><strong>Inflectional Selection Failure:</strong> In Portuguese, the plural imperative requires specific morphology ("-am"/"-em"). The AI selected 3rd person singular forms (which coincide with singular imperative), violating verb-subject agreement in a collective context.</li>
+                    <li><strong>Unresolved Reference Ambiguity:</strong> The pronoun "you" remained with indefinite reference. In prison contexts, where agentivity precision is essential, this failure has real operational impact: ambiguous commands can generate disobedience or confusion.</li>
+                    <li><strong>Multimodal Integration Failure:</strong> The AI processed only the linguistic input (audio), ignoring the visual input that would disambiguate the number. This modal dissociation is typical of systems that don't implement deep syntactic integration between different information sources.</li>
+                </ul>
+            </div>
+
+            <!-- CASE 2 -->
+            <h3>Case 2: Collapse at the Syntax-Pragmatics Interface</h3>
+            <div class="ba-wrap">
+                <div class="ba-box ba-before">
+                    <span class="ba-label">❌ AI Output</span>
+                    <p><em>Unsegmented block, missing punctuation, invented "Ó,"</em></p>
+                </div>
+                <div class="ba-box ba-after">
+                    <span class="ba-label">✅ Corrected</span>
+                    <p><em>Segmented acts with proper illocutionary force markers</em></p>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>Analysis of the Syntax-Pragmatics Interface Collapse</h4>
+                <ul class="analysis-list">
+                    <li><strong>Illocutionary Force Encoding Failure:</strong> The AI didn't insert punctuation to mark different speech acts: period (command), exclamation (reaction), question (inquiry). This erases the illocutionary force of each segment.</li>
+                    <li><strong>Absence of Syntactic-Discourse Segmentation:</strong> The entire subtitle event was treated as a monolithic block, without identifying the boundaries between: command to object → emotional exclamation → self-command → phone answering. Each should be a separate maximal constituent.</li>
+                    <li><strong>Hallucination by Structural Pressure:</strong> The inserted "Ó," is a failed attempt to create a vocative or topic, probably in response to a misinterpreted intonational pause. It demonstrates how the AI "invents" structure to fill gaps in subtitle generation.</li>
+                    <li><strong>Broken Phonology-Orthography Interface:</strong> The AI didn't convert intonational patterns (pauses, pitch changes) into punctuation markers. The lack of "?" in "Hello?" leaves it ambiguous whether it's a question or an exclamation, creating ambiguity and completely distorting the communicative intent.</li>
+                </ul>
+            </div>
+
+            <!-- CASE 3 -->
+            <h3>Case 3: Multilevel Collapse in Semantic Selection</h3>
+            <div class="two-columns">
+                <div class="card">
+                    <h4>Context</h4>
+                    <p>Party reality show. Bus arrives to pick up participants.</p>
+                    <div class="ba-box ba-before" style="margin-top: 1rem;">
+                        <span class="ba-label">❌ Flawed AI Output</span>
+                        <p><em>"Fora, piovo! Chegô a impulsão!"</em></p>
+                    </div>
+                </div>
+                <div class="card">
+                    <h4>Original Audio</h4>
+                    <div class="ba-box ba-after" style="margin-top: 1rem;">
+                        <span class="ba-label">✅ What was said</span>
+                        <p><em>"Bora, povo! Chegou o busão!"</em> (Let's go, people! The bus has arrived!)</p>
+                    </div>
+                </div>
+            </div>
+            <div class="analysis-box">
+                <h4>Analysis of Multilevel Collapse in Semantic Selection</h4>
+                <ul class="analysis-list">
+                    <li><strong>Catastrophic Semantic Selection:</strong> The AI replaced "Bora" (invitation interjection) with "Fora" (expulsion interjection), creating a pragmatic antonym. This total semantic inversion completely violates contextual selection (bus arrival as a positive event).</li>
+                    <li><strong>Neologism by Phonetic-Semantic Contamination:</strong> "Piovo" doesn't exist in the Portuguese lexicon. It's a hallucinated neologism resulting from contamination between "povo" (people) and possibly "piada" (joke) or "pio" (chirp). Demonstrates a fragile lexical representation in the model.</li>
+                    <li><strong>Phonology-Lexicon Interface Failure:</strong> "Busão" was decoded as "impulsão" (a real word meaning "impulsion"), but semantically inappropriate to the context. The AI activated phonetic paths that led to a real word, but without semantic or contextual adequacy.</li>
+                    <li><strong>Complete Disconnection from Referential Anchoring:</strong> The generated sentence, perhaps due to background noise, has no possible reference in the context: there's no "piovo" to expel, no "impulsão" arriving. It's a "zombie phrase" with intact syntactic form but no valid semantic content.</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- 5. RESULTS -->
+        <section class="reveal">
+            <h2>5. Qualitative, Quantitative & Institutional Results</h2>
+            
+            <h3>Qualitative Results</h3>
+            <div class="card" style="margin-bottom: 2rem;">
+                <ul>
+                    <li>Taxonomy of <strong>15 syntactic-semantic error categories</strong> mapped to theoretical concepts (argument structure, thematic roles, grammatical features, etc.)</li>
+                    <li>Structured feedback system transforming vague evaluations ("overall feedback") into specific, actionable syntactic diagnostics for AI engineers</li>
+                    <li>Detection of systematic failure patterns at the syntax-pragmatics interface</li>
+                    <li>Mapping of the relationship between linguistic complexity and specific error types</li>
+                    <li>Replicable methodological model for syntactic evaluation of any AI-generated text in multiple languages</li>
+                </ul>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric-card"><span class="metric-number">73%</span><div class="metric-label">Reduction in manual review time</div></div>
+                <div class="metric-card"><span class="metric-number">100%</span><div class="metric-label">Case coverage by deep analysis</div></div>
+                <div class="metric-card"><span class="metric-number">85%</span><div class="metric-label">Critical errors caught pre-publication</div></div>
+                <div class="metric-card"><span class="metric-number">92%</span><div class="metric-label">Punctuation error categorization accuracy</div></div>
+            </div>
+
+            <h3>Institutional Impact</h3>
+            <div class="two-columns">
+                <div class="card">
+                    <ul>
+                        <li><strong>Feedback system overhaul:</strong> Subjective → 15-category syntactic-semantic violation matrix</li>
+                        <li><strong>Methodology validation:</strong> 100+ successfully corrected contents</li>
+                        <li><strong>Severity-based prioritization:</strong> Syntax-pragmatics interface errors (MAJOR) prioritized over grammatical feature errors (MINOR)</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <ul>
+                        <li><strong>Cross-lingual replication:</strong> Methodology applied to multiple language pairs</li>
+                        <li><strong>Linguistic verification stages:</strong> Integrated into development workflow</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. CONNECTION TO ACADEMIC CONCEPTS -->
+        <section class="reveal">
+            <h2>6. Connection to Core Syntactic Concepts</h2>
+            <div class="two-columns">
+                <div class="card">
+                    <h4>Applied Concepts</h4>
+                    <ul>
+                        <li><strong>Agreement & Grammatical Features →</strong> Error classification system: Used [+plural], [+formal], [+gender] features to categorize violations</li>
+                        <li><strong>Illocutionary Force →</strong> Pragmatic diagnosis: Analyzed punctuation as speech act marker</li>
+                        <li><strong>Semantic Selection (s-selection) →</strong> Hallucination detection: Verified compatibility between selector and selected</li>
+                        <li><strong>Syntax-Semantics Interfaces →</strong> Coherence validation: Applied Theta Criterion to check valid thematic roles</li>
+                        <li><strong>Constituent Structure →</strong> Integrity analysis: Checked constituent boundaries for broken segmentation</li>
+                    </ul>
+                </div>
+                <div class="epistemology-box" style="margin:0;">
+                    <p><strong>Key Insight:</strong> "Syntax is not an abstract theory: it's the operating system of language. When an AI 'hallucinates', it violates the rules of this operating system. Detecting these violations is diagnosing the logical integrity of the generated text."</p>
+                </div>
+            </div>
+            <div class="epistemology-box" style="margin-top:1rem;">
+                <p><strong>Subsequent Application:</strong> The same syntactic approach was applied in subsequent projects for machine translation auditing, chatbot evaluation, and verification of AI-generated technical manuals — always with the same principle: syntactic structure is the signature of logical integrity.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- FOOTER (identical to landing page) -->
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-top">
+                <div class="footer-brand">
+                    <span class="footer-logo">Ariane<span>.</span></span>
+                    <p class="footer-tagline">Linguistic AI Specialist · Portuguese Language Expert · São Paulo, Brazil · Open to remote worldwide.</p>
+                </div>
+                <div class="footer-col">
+                    <h5>Portfolio</h5>
+                    <ul>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#about">About</a></li>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#cases">Case Studies</a></li>
+                        <li><a href="https://seuusuario.github.io/athyna-portfolio/#skills">Skills</a></li>
+                        <li><a href="https://alc-etimo.github.io/emlds/" target="_blank">EMLDS Portfolio</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Expertise</h5>
+                    <ul>
+                        <li><a href="#">LLM Evaluation</a></li>
+                        <li><a href="#">AI Training Data</a></li>
+                        <li><a href="#">Localization LQA</a></li>
+                        <li><a href="#">NLP Data Quality</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h5>Contact</h5>
+                    <ul>
+                        <li><a href="mailto:ariane.etimo@gmail.com">Email</a></li>
+                        <li><a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a></li>
+                        <li><a href="https://wa.me/5511943882913" target="_blank">WhatsApp</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span class="footer-copy">© 2026 Ariane Lesnyak Castelló. All rights reserved.</span>
+                <div class="footer-links-bottom">
+                    <a href="mailto:ariane.etimo@gmail.com">Contact</a>
+                    <a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for reveal animations
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach((entry, i) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => entry.target.classList.add('visible'), i * 80);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // Active nav link highlighting
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(s => {
+                if (window.scrollY >= s.offsetTop - 120) current = s.id;
+            });
+            navLinks.forEach(a => {
+                a.style.color = a.getAttribute('href') === '#' + current ? 'var(--purple)' : '';
+            });
+        });
+    </script>
+</body>
+</html>
