@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ariane Lesnyak Castelló — Portuguese Language Expert</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+/* ── TOKENS ── */
+:root {
+  --bg:        #f8f5f2;
+  --bg-case:   #dccafc;
+  --purple:    #6e35cb;
+  --mint:      #6cd7ae;
+  --ink:       #111111;
+  --muted:     #555555;
+  --mid:       #777777;
+  --white:     #ffffff;
+  --border:    rgba(110,53,203,0.15);
+  --border-soft: rgba(0,0,0,0.08);
+  --tag-bg:    #ffffff;
+  --footer-bg: #1a1a1a;
+
+  --purple-dim: rgba(110,53,203,0.08);
+  --mint-dim:   rgba(108,215,174,0.15);
+}
+
+body {
+  font-family: 'Lexend', sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.6;
+  font-size: 16px;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(248,245,242,0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-soft);
+  padding: 0 2.5rem;
+  height: 64px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-logo {
+  font-family: 'Lexend', sans-serif;
+  font-size: 1rem; font-weight: 700; color: var(--ink);
+  letter-spacing: -0.02em;
+}
+.nav-logo span { color: var(--purple); }
+.nav-links { display: flex; align-items: center; gap: 2rem; }
+.nav-links a {
+  color: var(--muted); text-decoration: none; font-size: 0.82rem;
+  font-weight: 400; transition: color 0.2s; font-family: Arial, sans-serif;
+}
+.nav-links a:hover { color: var(--purple); }
+.nav-cta {
+  background: var(--purple); color: var(--white);
+  padding: 0.5rem 1.2rem; font-size: 0.8rem; font-weight: 600;
+  text-decoration: none; border-radius: 100px;
+  transition: opacity 0.2s; letter-spacing: 0.01em;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* ── HERO ── */
+.hero {
+  max-width: 1100px; margin: 0 auto;
+  padding: 9rem 2.5rem 5rem;
+  position: relative;
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--purple-dim); border: 1px solid var(--border);
+  color: var(--purple); padding: 0.35rem 1rem; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.06em;
+  text-transform: uppercase; margin-bottom: 2rem;
+  opacity: 0; animation: fadeUp 0.6s 0.1s forwards;
+  font-family: Arial, sans-serif;
+}
+.hero-eyebrow::before {
+  content: ''; width: 7px; height: 7px; background: var(--mint);
+  border-radius: 50%; flex-shrink: 0;
+}
+.hero h1 {
+  font-size: clamp(2.6rem, 5.5vw, 5rem);
+  font-weight: 700; line-height: 1.05;
+  letter-spacing: -0.035em; margin-bottom: 1.5rem;
+  max-width: 800px; color: var(--ink);
+  opacity: 0; animation: fadeUp 0.7s 0.2s forwards;
+}
+.hero h1 .accent {
+  color: var(--purple);
+  font-weight: 300;
+}
+.hero-sub {
+  font-size: 1rem; color: var(--muted); max-width: 520px;
+  line-height: 1.8; margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.7s 0.35s forwards;
+  font-family: Arial, sans-serif;
+}
+.hero-sub strong { color: var(--ink); font-weight: 700; }
+.hero-chips {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.8rem;
+  opacity: 0; animation: fadeUp 0.7s 0.45s forwards;
+}
+.chip {
+  background: var(--white); border: 1px solid var(--border-soft);
+  color: var(--ink); padding: 0.3rem 0.85rem; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 400; font-family: Arial, sans-serif;
+  transition: border-color 0.2s;
+}
+.chip:hover { border-color: var(--purple); }
+.chip.hi {
+  background: var(--purple-dim); border-color: var(--border);
+  color: var(--purple); font-weight: 600;
+}
+.hero-cta {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  opacity: 0; animation: fadeUp 0.7s 0.55s forwards;
+}
+.btn-purple {
+  background: var(--purple); color: var(--white);
+  padding: 0.8rem 2rem; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 600; text-decoration: none;
+  transition: opacity 0.2s; letter-spacing: 0.01em;
+}
+.btn-purple:hover { opacity: 0.85; }
+.btn-outline {
+  background: transparent; color: var(--ink);
+  padding: 0.8rem 2rem; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 500; text-decoration: none;
+  border: 1.5px solid rgba(0,0,0,0.2); transition: border-color 0.2s;
+  font-family: Arial, sans-serif;
+}
+.btn-outline:hover { border-color: var(--purple); color: var(--purple); }
+
+/* hero deco blob */
+.hero-blob {
+  position: absolute; right: 0; top: 8rem;
+  width: 420px; height: 420px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(108,215,174,0.18) 0%, rgba(110,53,203,0.06) 55%, transparent 75%);
+  filter: blur(40px); pointer-events: none;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── STATS ── */
+.stats-bar {
+  background: var(--white);
+  border-top: 1px solid var(--border-soft);
+  border-bottom: 1px solid var(--border-soft);
+}
+.stats-inner {
+  max-width: 1100px; margin: 0 auto; padding: 0 2.5rem;
+  display: grid; grid-template-columns: repeat(4,1fr);
+}
+.stat-item {
+  padding: 2.2rem 1.5rem;
+  border-right: 1px solid var(--border-soft);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  display: block; font-size: 2.4rem; font-weight: 700;
+  color: var(--purple); letter-spacing: -0.04em;
+  line-height: 1; margin-bottom: 0.4rem;
+}
+.stat-label {
+  font-size: 0.75rem; color: var(--muted); line-height: 1.4;
+  font-family: Arial, sans-serif;
+}
+
+/* ── SECTIONS ── */
+.section { padding: 6rem 2.5rem; }
+.bg-white { background: var(--white); }
+.bg-case  { background: var(--bg-case); }
+.section-inner { max-width: 1100px; margin: 0 auto; }
+
+.section-eyebrow {
+  display: inline-block; margin-bottom: 0.8rem;
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--purple);
+  font-family: Arial, sans-serif;
+}
+.section h2 {
+  font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+  font-weight: 700; letter-spacing: -0.03em;
+  line-height: 1.15; margin-bottom: 1rem; color: var(--ink);
+}
+.section-lead {
+  color: var(--muted); max-width: 520px; line-height: 1.8;
+  font-size: 0.93rem; margin-bottom: 3.5rem;
+  font-family: Arial, sans-serif;
+}
+
+/* ── ABOUT GRID ── */
+.about-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+}
+@media (max-width: 640px) { .about-grid { grid-template-columns: 1fr; } }
+
+.about-card {
+  background: var(--white); border: 1px solid var(--border-soft);
+  border-radius: 16px; padding: 2rem;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.about-card:hover {
+  box-shadow: 0 8px 32px rgba(110,53,203,0.1);
+  transform: translateY(-2px);
+}
+.about-card-icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  background: var(--mint-dim); display: flex;
+  align-items: center; justify-content: center;
+  font-size: 1.1rem; margin-bottom: 1rem;
+}
+.about-card h3 {
+  font-size: 0.8rem; font-weight: 700; color: var(--purple);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 0.6rem; font-family: Arial, sans-serif;
+}
+.about-card p {
+  font-size: 0.88rem; color: var(--muted); line-height: 1.75;
+  font-family: Arial, sans-serif;
+}
+.about-card p strong { color: var(--ink); font-weight: 700; }
+
+/* ── CASES ── */
+.cases-stack { display: flex; flex-direction: column; gap: 1.2rem; }
+
+.case-card {
+  background: var(--white); border: 1px solid rgba(110,53,203,0.12);
+  border-radius: 16px; overflow: hidden;
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.case-card:hover {
+  box-shadow: 0 12px 40px rgba(110,53,203,0.12);
+  transform: translateY(-2px);
+}
+.case-header {
+  padding: 2rem 2rem 1.5rem;
+  border-bottom: 1px solid rgba(110,53,203,0.1);
+  display: flex; justify-content: space-between;
+  align-items: flex-start; gap: 1.5rem; flex-wrap: wrap;
+}
+.case-num {
+  font-size: 0.68rem; font-weight: 700; color: var(--purple);
+  letter-spacing: 0.1em; text-transform: uppercase;
+  margin-bottom: 0.5rem; font-family: Arial, sans-serif;
+}
+.case-header h3 {
+  font-size: 1.05rem; font-weight: 600; color: var(--ink);
+  margin-bottom: 0.7rem; line-height: 1.35; letter-spacing: -0.01em;
+}
+.case-tags { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.ctag {
+  background: var(--white); border: 1px solid var(--border-soft);
+  color: var(--ink); padding: 0.22rem 0.7rem; border-radius: 100px;
+  font-size: 0.68rem; font-weight: 400; font-family: Arial, sans-serif;
+}
+.case-link {
+  color: var(--purple); font-size: 0.78rem; text-decoration: none;
+  border: 1.5px solid var(--border); padding: 0.4rem 1rem;
+  border-radius: 100px; white-space: nowrap; flex-shrink: 0;
+  font-weight: 600; align-self: flex-start;
+  transition: all 0.2s; background: var(--purple-dim);
+  font-family: Arial, sans-serif;
+}
+.case-link:hover {
+  background: var(--purple); color: var(--white);
+  border-color: var(--purple);
+}
+
+.case-body { padding: 2rem; }
+.case-body > p {
+  font-size: 0.89rem; color: var(--muted); line-height: 1.8;
+  margin-bottom: 1.4rem; font-family: Arial, sans-serif;
+}
+.case-body > p strong { color: var(--ink); font-weight: 700; }
+
+/* BA */
+.ba-wrap {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0;
+}
+@media (max-width: 560px) { .ba-wrap { grid-template-columns: 1fr; } }
+
+.ba-box {
+  padding: 1.2rem 1.4rem; font-size: 0.83rem; line-height: 1.65;
+  border-radius: 10px; font-family: Arial, sans-serif;
+}
+.ba-before {
+  background: rgba(239,68,68,0.05);
+  border: 1px solid rgba(239,68,68,0.2);
+}
+.ba-after {
+  background: rgba(108,215,174,0.1);
+  border: 1px solid rgba(108,215,174,0.3);
+}
+.ba-label {
+  font-size: 0.64rem; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; display: block; margin-bottom: 0.6rem;
+}
+.ba-before .ba-label { color: #dc2626; }
+.ba-after  .ba-label { color: #059669; }
+.ba-box p  { color: var(--muted); margin: 0; }
+.ba-box p strong { color: var(--ink); font-weight: 700; }
+.ba-box code {
+  font-family: 'Courier New', monospace; font-size: 0.76rem;
+  color: var(--purple); background: var(--purple-dim);
+  padding: 0.1rem 0.3rem; border-radius: 4px;
+}
+
+/* metrics */
+.case-metrics {
+  display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 1.5rem;
+  border-top: 1px solid var(--border-soft); padding-top: 1.5rem;
+}
+.metric {
+  flex: 1; min-width: 100px; text-align: center; padding: 1rem;
+  background: var(--bg); border: 1px solid var(--border-soft);
+  border-radius: 10px;
+}
+.metric-num {
+  display: block; font-size: 1.6rem; font-weight: 700;
+  color: var(--purple); letter-spacing: -0.03em;
+  line-height: 1; margin-bottom: 0.3rem;
+}
+.metric-label {
+  font-size: 0.68rem; color: var(--muted);
+  font-family: Arial, sans-serif;
+}
+
+/* ── SKILLS ── */
+.skills-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1rem; max-width: 680px; margin: 0 auto;
+}
+@media (max-width: 540px) { .skills-grid { grid-template-columns: 1fr; } }
+
+.skill-block {
+  background: var(--white); border: 1px solid var(--border-soft);
+  border-radius: 14px; padding: 1.5rem;
+  transition: box-shadow 0.2s;
+}
+.skill-block:hover { box-shadow: 0 4px 20px rgba(110,53,203,0.08); }
+.skill-block h4 {
+  font-size: 0.7rem; font-weight: 700; color: var(--purple);
+  letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem;
+  font-family: Arial, sans-serif;
+}
+.skill-list { list-style: none; }
+.skill-list li {
+  font-size: 0.83rem; color: var(--muted); padding: 0.28rem 0;
+  border-bottom: 1px solid var(--border-soft);
+  font-family: Arial, sans-serif;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.skill-list li:last-child { border: none; }
+.skill-list li::before {
+  content: ''; width: 5px; height: 5px; background: var(--mint);
+  border-radius: 50%; flex-shrink: 0;
+}
+
+/* ── CONTACT ── */
+.contact-box {
+  background: var(--white); border: 1px solid var(--border-soft);
+  border-radius: 20px; padding: 4rem 2rem; text-align: center;
+  position: relative; overflow: hidden;
+}
+.contact-box::before {
+  content: '';
+  position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 500px; height: 300px; border-radius: 50%;
+  background: radial-gradient(ellipse, rgba(108,215,174,0.15) 0%, rgba(110,53,203,0.06) 50%, transparent 70%);
+  filter: blur(30px); pointer-events: none;
+}
+.contact-box h3 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem); font-weight: 700;
+  letter-spacing: -0.025em; margin-bottom: 0.7rem; color: var(--ink);
+}
+.contact-box p {
+  color: var(--muted); font-size: 0.9rem; margin-bottom: 2.5rem;
+  line-height: 1.7; font-family: Arial, sans-serif;
+}
+.contact-links { display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap; }
+.contact-link {
+  background: var(--bg); border: 1px solid var(--border-soft);
+  color: var(--ink); padding: 0.65rem 1.4rem; border-radius: 100px;
+  text-decoration: none; font-size: 0.82rem; font-weight: 500;
+  transition: all 0.2s; font-family: Arial, sans-serif;
+}
+.contact-link:hover {
+  border-color: var(--purple); color: var(--purple);
+  background: var(--purple-dim);
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--footer-bg); color: #aaaaaa;
+  padding: 3.5rem 2.5rem 2rem;
+}
+.footer-inner {
+  max-width: 1100px; margin: 0 auto;
+}
+.footer-top {
+  display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 3rem; padding-bottom: 3rem;
+  border-bottom: 1px solid #2e2e2e;
+}
+@media (max-width: 768px) {
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 2rem; }
+}
+.footer-brand {}
+.footer-logo {
+  font-family: 'Lexend', sans-serif; font-size: 1.1rem;
+  font-weight: 700; color: var(--white); margin-bottom: 0.8rem;
+  display: block; letter-spacing: -0.02em;
+}
+.footer-logo span { color: var(--mint); }
+.footer-tagline {
+  font-size: 0.82rem; color: #666; line-height: 1.6;
+  max-width: 220px; font-family: Arial, sans-serif;
+}
+.footer-col h5 {
+  font-size: 0.72rem; font-weight: 700; color: var(--white);
+  letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 1rem; font-family: Arial, sans-serif;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.5rem; }
+.footer-col ul li a {
+  color: #777; text-decoration: none; font-size: 0.82rem;
+  font-family: Arial, sans-serif; transition: color 0.2s;
+}
+.footer-col ul li a:hover { color: var(--white); }
+.footer-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding-top: 2rem; flex-wrap: wrap; gap: 1rem;
+}
+.footer-copy {
+  font-size: 0.75rem; color: #555; font-family: Arial, sans-serif;
+}
+.footer-links-bottom { display: flex; gap: 1.5rem; }
+.footer-links-bottom a {
+  font-size: 0.75rem; color: #555; text-decoration: none;
+  font-family: Arial, sans-serif; transition: color 0.2s;
+}
+.footer-links-bottom a:hover { color: #aaa; }
+
+/* ── SCROLL REVEAL ── */
+.reveal {
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .stats-inner { grid-template-columns: 1fr 1fr; }
+  .stat-item { border-right: none; border-bottom: 1px solid var(--border-soft); }
+  .stat-item:nth-child(odd) { border-right: 1px solid var(--border-soft); }
+  .nav-links { display: none; }
+  .hero-blob { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">Ariane<span>.</span></span>
+  <div class="nav-links">
+    <a href="#about">About</a>
+    <a href="#cases">Cases</a>
+    <a href="#skills">Skills</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <a href="#contact" class="nav-cta">Get in touch</a>
+</nav>
+
+<!-- HERO -->
+<div style="position:relative; overflow:hidden; background:var(--bg);">
+  <div class="hero">
+    <div class="hero-blob"></div>
+    <span class="hero-eyebrow">Portuguese Language Expert · AI Evaluation</span>
+    <h1>Language doesn't<br>fail <span class="accent">randomly.</span></h1>
+    <p class="hero-sub">
+      <strong>Linguistic AI Specialist</strong> with 10+ years evaluating how language breaks under real-world constraints — and fixing it at scale. Native Portuguese · Fluent English · Formal Linguistics &amp; IT background.
+    </p>
+    <div class="hero-chips">
+      <span class="chip hi">LLM Evaluation</span>
+      <span class="chip hi">AI Training Data</span>
+      <span class="chip hi">Linguistic Annotation</span>
+      <span class="chip">Localization LQA</span>
+      <span class="chip">MTPE</span>
+      <span class="chip">NLP Data</span>
+      <span class="chip">Brazilian Portuguese</span>
+      <span class="chip">Corpus Linguistics</span>
+    </div>
+    <div class="hero-cta">
+      <a href="#cases" class="btn-purple">View case studies</a>
+      <a href="https://linkedin.com/in/arianelesnyak" class="btn-outline" target="_blank">LinkedIn ↗</a>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item reveal">
+      <span class="stat-num">1M+</span>
+      <div class="stat-label">Words evaluated &amp; annotated</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">10+</span>
+      <div class="stat-label">Years linguistic data quality</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">30k+</span>
+      <div class="stat-label">Users impacted by systems built</div>
+    </div>
+    <div class="stat-item reveal">
+      <span class="stat-num">67%</span>
+      <div class="stat-label">Reduction in retrieval failures</div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section class="section bg-white" id="about">
+  <div class="section-inner">
+    <span class="section-eyebrow reveal">About</span>
+    <h2 class="reveal">AI systems need calibration to understand<br>how humans <em style="font-style:normal;color:var(--purple)">actually</em> speak.</h2>
+    <p class="section-lead reveal">Linguistic errors aren't random — they're systematic. I've spent a decade finding those patterns and fixing them at scale.</p>
+    <div class="about-grid reveal">
+      <div class="about-card">
+        <div class="about-card-icon">🧠</div>
+        <h3>AI &amp; Linguistic Data</h3>
+        <p>Annotated <strong>10,000+ subtitle entries</strong> to improve LLM performance, identified <strong>training data provenance artifacts</strong> in AI-generated localization, and built <strong>Python automation</strong> for SDH metadata structuring. Evaluates AI outputs for fluency, register, cultural accuracy, and discourse coherence.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">🔍</div>
+        <h3>Localization &amp; LQA</h3>
+        <p>Full localization chain: <strong>translation, subtitling, SDH, LQA, MTPE, QC, transcreation</strong> across PT-BR, EN, FR, ES. Handles unscripted content from scratch, flags mistranslations, register mismatches, and cultural inaccuracies — the same linguistic judgment required for AI output evaluation.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">📚</div>
+        <h3>Linguistics &amp; NLP</h3>
+        <p>Formal training at <strong>USP (Linguistics &amp; Applied Linguistics)</strong> — discourse analysis, syntax, semantics, pragmatics. Analyzes discourse-level coherence beyond surface errors. <strong>EMLDS candidate</strong> — Erasmus Mundus in Linguistic Data Science.</p>
+      </div>
+      <div class="about-card">
+        <div class="about-card-icon">⚙️</div>
+        <h3>Scale &amp; Systems</h3>
+        <p>Built knowledge infrastructure for <strong>30,000+ agents</strong> at a major telecom, reducing failed information retrieval by <strong>67%</strong> through corpus linguistics and taxonomy design. Understands how linguistic variation creates noise in large-scale systems — and how to fix it structurally.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section bg-case" id="cases">
+  <div class="section-inner">
+    <span class="section-eyebrow reveal">Case Studies</span>
+    <h2 class="reveal">Applied work in AI language evaluation</h2>
+    <p class="section-lead reveal">Three projects demonstrating linguistic analysis at scale — directly relevant to AI training data, LLM evaluation, and language quality assessment.</p>
+
+    <div class="cases-stack reveal">
+
+      <!-- CASE 01 -->
+      <div class="case-card">
+        <div class="case-header">
+          <div>
+            <div class="case-num">Case 01 · Provenance Analysis</div>
+            <h3>Training Data Provenance Through Output Analysis</h3>
+            <div class="case-tags">
+              <span class="ctag">LLM Evaluation</span>
+              <span class="ctag">AI Output Analysis</span>
+              <span class="ctag">Training Data</span>
+              <span class="ctag">Digital Forensics</span>
+              <span class="ctag">Hallucination Detection</span>
+            </div>
+          </div>
+          <a href="https://alc-etimo.github.io/emlds/case-2.html" class="case-link" target="_blank">Read full case ↗</a>
+        </div>
+        <div class="case-body">
+          <p>Investigated <strong>recurrent patterns in AI-generated subtitles</strong> for streaming platforms, treating output anomalies not as random errors but as traceable artifacts of training data composition. Developed a replicable 5-stage provenance audit framework combining corpus linguistics and digital forensics.</p>
+          <div class="ba-wrap">
+            <div class="ba-box ba-before">
+              <span class="ba-label">⚠ Before — AI output anomaly</span>
+              <p>Whisper-generated subtitle with <strong>zero acoustic or contextual alignment</strong> with source media. Platform-specific attribution patterns preserved verbatim in commercial streaming output — invisible to standard QA processes.</p>
+            </div>
+            <div class="ba-box ba-after">
+              <span class="ba-label">✓ After — Provenance identified</span>
+              <p>Artifact classified as <strong>volunteer-sourced training data trace</strong>. Pattern traced to specific platform, enabling targeted dataset audit and curation recommendations for future model training.</p>
+            </div>
+          </div>
+          <p>Three artifact types classified: <strong>volunteer-sourced data traces</strong>, <strong>cross-platform contamination</strong>, and <strong>unauthorized content inclusion</strong> — each requiring different detection methodology and curation response.</p>
+          <div class="case-metrics">
+            <div class="metric"><span class="metric-num">3</span><div class="metric-label">Artifact typologies developed</div></div>
+            <div class="metric"><span class="metric-num">5</span><div class="metric-label">Stage audit framework</div></div>
+            <div class="metric"><span class="metric-num">100%</span><div class="metric-label">Replicable methodology</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 02 -->
+      <div class="case-card">
+        <div class="case-header">
+          <div>
+            <div class="case-num">Case 02 · Corpus Linguistics at Scale</div>
+            <h3>From Speech Analytics to Enterprise Taxonomy: Linguistic Variation at Scale</h3>
+            <div class="case-tags">
+              <span class="ctag">Corpus Linguistics</span>
+              <span class="ctag">NLP Data Quality</span>
+              <span class="ctag">Semantic Analysis</span>
+              <span class="ctag">Knowledge Systems</span>
+              <span class="ctag">Taxonomy Design</span>
+            </div>
+          </div>
+          <a href="https://alc-etimo.github.io/emlds/case-1.html" class="case-link" target="_blank">Read full case ↗</a>
+        </div>
+        <div class="case-body">
+          <p>Analyzed <strong>2M+ monthly customer-agent interactions</strong> at a major telecom to map systematic linguistic variation between how customers expressed problems and how systems classified them — the same type of noise that degrades AI model performance at scale.</p>
+          <div class="ba-wrap">
+            <div class="ba-box ba-before">
+              <span class="ba-label">⚠ Before — Triple mismatch</span>
+              <p><strong>Customer:</strong> "my mobile data ran out"<br>
+              <strong>Agent search:</strong> "no mobile internet"<br>
+              <strong>System label:</strong> "data allowance exhaustion"<br><br>
+              Three layers of variation. Retrieval failure for 30,000+ agents daily.</p>
+            </div>
+            <div class="ba-box ba-after">
+              <span class="ba-label">✓ After — Structured vocabulary</span>
+              <p><strong>41 customer variants + 12 agent patterns</strong> normalized into governed taxonomy. Full semantic relation framework (BT/NT/RT/UF per ISO 25964). Deployed enterprise-wide.</p>
+            </div>
+          </div>
+          <p>Controlled vocabulary of <strong>2,700+ terms</strong> built using Boolean proximity operators and corpus linguistics methods. Directly applicable to <strong>NLP dataset curation, AI output evaluation, and language model fine-tuning</strong>.</p>
+          <div class="case-metrics">
+            <div class="metric"><span class="metric-num">67%</span><div class="metric-label">Reduction in failed retrievals</div></div>
+            <div class="metric"><span class="metric-num">2,700+</span><div class="metric-label">Terms governed</div></div>
+            <div class="metric"><span class="metric-num">30k+</span><div class="metric-label">Agents impacted</div></div>
+            <div class="metric"><span class="metric-num">2M+</span><div class="metric-label">Monthly interactions analyzed</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CASE 03 -->
+      <div class="case-card">
+        <div class="case-header">
+          <div>
+            <div class="case-num">Case 03 · Python Automation</div>
+            <h3>Python Workflow Automation for SDH Linguistic Metadata</h3>
+            <div class="case-tags">
+              <span class="ctag">Python</span>
+              <span class="ctag">Text Processing</span>
+              <span class="ctag">AI Workflow</span>
+              <span class="ctag">Metadata Structuring</span>
+              <span class="ctag">NLP Pipeline</span>
+            </div>
+          </div>
+          <a href="https://alc-etimo.github.io/emlds/mini-case-python.html" class="case-link" target="_blank">Read full case ↗</a>
+        </div>
+        <div class="case-body">
+          <p>Built a <strong>Python script for automated SDH metadata structuring</strong> — parsing subtitle files, identifying timestamps, and inserting standardized annotation fields. Architecture mirrors NLP annotation pipelines used in AI training data preparation.</p>
+          <div class="ba-wrap">
+            <div class="ba-box ba-before">
+              <span class="ba-label">⚠ Before — Manual annotation</span>
+              <p><code>00:00:30,823 --> 00:00:32,408<br>Foram pra festa? Foi boa?</code><br><br>8–10 seconds per entry. Inconsistent. Error-prone at volume.</p>
+            </div>
+            <div class="ba-box ba-after">
+              <span class="ba-label">✓ After — Automated output</span>
+              <p><code>{S:||A:||L:||T:} [sub:||action:||cap:||P]<br>Foram pra festa?</code><br><br>2–3 seconds per entry. 100% consistent. Scales to any file size.</p>
+            </div>
+          </div>
+          <p>Extensions include <strong>spaCy NER for character identification, sentiment tagging, and speech-act classification</strong> — building toward enriched AI training data annotation workflows.</p>
+          <div class="case-metrics">
+            <div class="metric"><span class="metric-num">70%</span><div class="metric-label">Formatting time reduction</div></div>
+            <div class="metric"><span class="metric-num">100%</span><div class="metric-label">Consistency across files</div></div>
+            <div class="metric"><span class="metric-num">+6h</span><div class="metric-label">Saved per 1,000-entry project</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="section bg-white" id="skills">
+  <div class="section-inner">
+    <span class="section-eyebrow reveal">Skills &amp; Tools</span>
+    <h2 class="reveal">What I bring to AI language evaluation</h2>
+    <p class="section-lead reveal">Formal linguistics training combined with hands-on AI annotation, localization pipeline experience, and Python automation.</p>
+    <div class="skills-grid reveal">
+      <div class="skill-block">
+        <h4>AI &amp; NLP</h4>
+        <ul class="skill-list">
+          <li>LLM Output Evaluation</li>
+          <li>Linguistic Annotation</li>
+          <li>Training Data Curation</li>
+          <li>MTPE &amp; Post-editing</li>
+          <li>Hallucination Detection</li>
+          <li>Prompt Assessment</li>
+        </ul>
+      </div>
+      <div class="skill-block">
+        <h4>Linguistics</h4>
+        <ul class="skill-list">
+          <li>Corpus Linguistics</li>
+          <li>Discourse Analysis</li>
+          <li>Syntax &amp; Semantics</li>
+          <li>Pragmatics</li>
+          <li>Terminology Management</li>
+          <li>Register &amp; Style Analysis</li>
+        </ul>
+      </div>
+      <div class="skill-block">
+        <h4>Localization</h4>
+        <ul class="skill-list">
+          <li>Subtitling (SDH / CC)</li>
+          <li>Localization LQA</li>
+          <li>QC &amp; Transcreation</li>
+          <li>Spotting &amp; Timing</li>
+          <li>UI/UX Localization</li>
+          <li>Cultural Adaptation</li>
+        </ul>
+      </div>
+      <div class="skill-block">
+        <h4>Tools &amp; Tech</h4>
+        <ul class="skill-list">
+          <li>Python (text processing, regex)</li>
+          <li>Subtitle Edit · EZTitles</li>
+          <li>MateCat · MemoQ · Trados</li>
+          <li>Salesforce Knowledge</li>
+          <li>GitHub · Jira · Trello</li>
+          <li>Whisper / ASR tools</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="section" style="background:var(--bg);" id="contact">
+  <div class="section-inner">
+    <div class="contact-box reveal">
+      <h3>Open to AI language evaluation projects</h3>
+      <p>LLM evaluation · AI training data · Linguistic annotation · Localization LQA · NLP data<br>
+      Remote · Freelance or full-time · Worldwide</p>
+      <div class="contact-links">
+        <a href="mailto:ariane.etimo@gmail.com" class="contact-link">Email ↗</a>
+        <a href="https://linkedin.com/in/arianelesnyak" class="contact-link" target="_blank">LinkedIn ↗</a>
+        <a href="https://alc-etimo.github.io/emlds/" class="contact-link" target="_blank">EMLDS Portfolio ↗</a>
+        <a href="https://wa.me/5511943882913" class="contact-link" target="_blank">WhatsApp ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER — Athyna style -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <span class="footer-logo">Ariane<span>.</span></span>
+        <p class="footer-tagline">Linguistic AI Specialist · Portuguese Language Expert · São Paulo, Brazil · Open to remote worldwide.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Portfolio</h5>
+        <ul>
+          <li><a href="#about">About</a></li>
+          <li><a href="#cases">Case Studies</a></li>
+          <li><a href="#skills">Skills</a></li>
+          <li><a href="https://alc-etimo.github.io/emlds/" target="_blank">EMLDS Portfolio</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Expertise</h5>
+        <ul>
+          <li><a href="#cases">LLM Evaluation</a></li>
+          <li><a href="#cases">AI Training Data</a></li>
+          <li><a href="#cases">Localization LQA</a></li>
+          <li><a href="#cases">NLP Data Quality</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <ul>
+          <li><a href="mailto:ariane.etimo@gmail.com">Email</a></li>
+          <li><a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a></li>
+          <li><a href="https://wa.me/5511943882913" target="_blank">WhatsApp</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span class="footer-copy">© 2026 Ariane Lesnyak Castelló. All rights reserved.</span>
+      <div class="footer-links-bottom">
+        <a href="mailto:ariane.etimo@gmail.com">Contact</a>
+        <a href="https://linkedin.com/in/arianelesnyak" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.07, rootMargin: '0px 0px -30px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+const sections = document.querySelectorAll('section[id], div[id]');
+const navLinks = document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => {
+    if (window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--purple)' : '';
+  });
+});
+</script>
+</body>
+</html>
